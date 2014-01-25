@@ -13,13 +13,14 @@
 class Awesometer
 
   # Initializes an Awesometer with an Array
-  def initialize awesomes
+  def initialize(awesomes, output = $stdout)
     raise TypeError if !awesomes.is_a?(Array)
-    @awesomes = awesomes
+    @awesomes, @output = awesomes, output
   end
 
   # returns most awesome person in array,
-  # defaults to first person if a tie
+  # delegates to Array.max which
+  # defaults to first person if a tie and
   # returns nil for an empty Array
   def most
     @awesomes.max
@@ -33,7 +34,7 @@ class Awesometer
 
   # prints the top ten most awesome people
   def top_ten
-    puts @awesomes.sort.reverse.first(10)
+    @output.puts @awesomes.sort.reverse.first(10)
   end
 
 end
@@ -50,18 +51,22 @@ class Person
     @name, @awesomeness = name, awesomeness
   end
 
+  # allows FixNum + Person
   def coerce(other)
-    [self.awesomeness, other]
+    [Person.new("", other), self]
   end
 
+  # override addition to use awesomeness
   def +(other_person)
     @awesomeness + other_person.awesomeness
   end
 
+  # defined spaceship for ordering
   def <=>(other_person)
     @awesomeness <=> other_person.awesomeness
   end
 
+  # pretty(ish) print
   def to_s
     @name + " AR: " + @awesomeness.to_s
   end

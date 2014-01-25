@@ -1,3 +1,6 @@
+require 'simplecov'
+SimpleCov.start
+
 require_relative 'awesometer'
 
 
@@ -7,10 +10,6 @@ describe Awesometer do
   end
 
   describe "#initialize" do
-    it "takes a single parameter" do
-      initialize = @awesometer.method(:initialize)
-      expect(initialize.parameters.size).to eq(1)
-    end
     it "of type array" do
       expect { Awesometer.new({}) }.to raise_error
     end
@@ -84,13 +83,19 @@ describe Awesometer do
       expect(@awesometer).to respond_to(:top_ten)
     end
     it "prints the top ten most awesome people" do
-      candidates = [
-        Person.new("leonardo", 7),
-        Person.new("donatello", 10),
-        Person.new("raphael", 5),
-        Person.new("michelangelo", 8)
-      ]
-      expect(Awesometer.new(candidates).top_ten).to eq(candidates[1])
+      candidates = (1..20).to_a.map{|x| Person.new("a", x)}
+      output_spy = StringIO.new
+      expected_output = "a AR: 20\na AR: 19\na AR: 18\na AR: 17\na AR: 16\n"\
+                        "a AR: 15\na AR: 14\na AR: 13\na AR: 12\na AR: 11\n"
+      Awesometer.new(candidates, output_spy).top_ten
+      expect(output_spy.string).to eq(expected_output)
+    end
+    it "top_ten still works with less than 10" do
+      candidates = (1..4).to_a.map{|x| Person.new("a", x)}
+      output_spy = StringIO.new
+      expected_output = "a AR: 4\na AR: 3\na AR: 2\na AR: 1\n"
+      Awesometer.new(candidates, output_spy).top_ten
+      expect(output_spy.string).to eq(expected_output)
     end
   end
 end
@@ -144,6 +149,12 @@ describe Person do
       p1 = Person.new("spinal tap", 1)
       p2 = Person.new("spinal tap", 2)
       expect(p1 <=> p2).to eq(1 <=> 2)
+    end
+    it "responds to coerce" do
+      expect(@person).to respond_to(:coerce)
+    end
+    it "allows FixNum + Person" do
+      expect(10 + @person).to eq(21)
     end
     it "responds to +" do
       expect(@person).to respond_to(:+)
