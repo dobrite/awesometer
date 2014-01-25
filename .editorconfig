@@ -1,0 +1,33 @@
+# EditorConfig is awesome: http://EditorConfig.org
+
+# top-most EditorConfig file
+root = true
+
+# 2 space indentation
+[*.ru]
+indent_style = space
+ident_size = 2
+
+# 2 space indentation
+[*.rb]
+indent_style = space
+ident_size = 2
+
+# 4 space indentation
+[*.py]
+indent_style = space
+indent_size = 4
+
+# tab indentation
+[*.php]
+indent_style = tab
+
+# 4 space indentation
+[*.js]
+indent_style = space
+ident_size = 4
+
+# 2 space indentation
+[*.html]
+indent_style = space
+indent_size = 2
