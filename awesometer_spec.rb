@@ -95,13 +95,69 @@ describe Awesometer do
   end
 end
 
-describe Person, "#initialize" do
-  it "should have a name" do
-    person = Person.new("spinal tap", 11)
-    expect(person).to respond_to(:name)
-  end
-  it "and an awesomeness value" do
-    person = Person.new("spinal tap", 11)
-    expect(person).to respond_to(:awesomeness)
+describe Person do
+  describe Person, "#initialize" do
+    before(:each) do
+        @person = Person.new("spinal tap", 11)
+    end
+
+    it "takes two parameters" do
+        expect(@person.method(:initialize).parameters.size).to eq(2)
+    end
+    it "the first of type String" do
+        ignore = 42
+        expect { Person.new("spinal tap", ignore) }.to_not raise_error
+    end
+    it "the second of type Integer" do
+        ignore = ""
+        expect { Person.new(ignore, 11) }.to_not raise_error
+    end
+    it "should have a #name method" do
+      expect(@person).to respond_to(:name)
+    end
+    it "that returns the person's name" do
+      expect(@person.name).to eq("spinal tap")
+    end
+    it "should have an #awesomeness method" do
+        expect(@person).to respond_to(:awesomeness)
+    end
+    it "that returns the person's awesomeness" do
+      expect(@person.awesomeness).to eq(11)
+    end
+    it "returns an instance of type Person" do
+        expect(@person).to be_an_instance_of(Person)
+    end
+    it "responds to <=>" do
+      expect(@person).to respond_to(:<=>)
+    end
+    it "that compares awesomeness (eq)" do
+      p1 = Person.new("spinal tap", 1)
+      p2 = Person.new("spinal tap", 1)
+      expect(p1 <=> p2).to eq(1 <=> 1)
+    end
+    it "that compares awesomeness (>)" do
+      p1 = Person.new("spinal tap", 2)
+      p2 = Person.new("spinal tap", 1)
+      expect(p1 <=> p2).to eq(2 <=> 1)
+    end
+    it "that compares awesomeness (<)" do
+      p1 = Person.new("spinal tap", 1)
+      p2 = Person.new("spinal tap", 2)
+      expect(p1 <=> p2).to eq(1 <=> 2)
+    end
+    it "responds to +" do
+      expect(@person).to respond_to(:+)
+    end
+    it "that adds awesomeness" do
+      p1 = Person.new("spinal tap", 1)
+      p2 = Person.new("spinal tap", 2)
+      expect(p1 + p2).to eq(3)
+    end
+    it "to_s at least displays name" do
+      expect(@person.to_s).to include(@person.name)
+    end
+    it "to_s at least displays awesomeness" do
+      expect(@person.to_s).to include(@person.awesomeness.to_s)
+    end
   end
 end

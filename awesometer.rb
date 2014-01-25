@@ -28,10 +28,7 @@ class Awesometer
   # returns the average awesomeness of the array
   def avg
     raise NotDefinedError if @awesomes.size == 0
-    sum = @awesomes.reduce(0.0) do |sum, person|
-      sum + person
-    end
-    sum / @awesomes.size
+    @awesomes.reduce(:+) / @awesomes.size.to_f
   end
 
   # prints the top ten most awesome people
@@ -41,15 +38,20 @@ class Awesometer
 
 end
 
-# Our Person Struct representing a single person
-class Person < Struct.new(:name, :awesomeness)
+# Our Person Object
+class Person
   include Comparable
+  attr_reader :name, :awesomeness
 
   # Initializes Person
   def initialize(name, awesomeness)
     raise TypeError if !name.is_a?(String)
     raise TypeError if !awesomeness.is_a?(Integer)
     @name, @awesomeness = name, awesomeness
+  end
+
+  def coerce(other)
+    [self.awesomeness, other]
   end
 
   def +(other_person)
@@ -61,7 +63,7 @@ class Person < Struct.new(:name, :awesomeness)
   end
 
   def to_s
-      name + " AR: " + awesomeness.to_s
+    @name + " AR: " + @awesomeness.to_s
   end
 end
 
