@@ -5,7 +5,7 @@
 # contents of the Array
 #
 # Author::    Dave Obrite (mailto: davidobrite@gmail.com)
-# License::   Public Domain
+# License::   MIT
 
 # This class is used to identify the most awesome person,
 # the average awesomeness, and can print out the top
